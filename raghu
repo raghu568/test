@@ -1,0 +1,132 @@
+AWS provides a set of DevOps services to automate software deployment efficiently. The three key services are:
+
+1️⃣ AWS CodePipeline → Automates the entire CI/CD workflow.
+2️⃣ AWS CodeBuild → Builds and tests the application.
+3️⃣ AWS CodeDeploy → Deploys the application to servers or cloud instances.
+
+1️⃣ AWS CodePipeline – CI/CD Automation 🛠️
+What is AWS CodePipeline?
+AWS CodePipeline is a Continuous Integration/Continuous Deployment (CI/CD) service that automates software release processes. It integrates with GitHub, Bitbucket, AWS CodeCommit, and other tools.
+
+How AWS CodePipeline Works?
+A CodePipeline consists of multiple stages:
+
+Source Stage → Fetches code from GitHub, AWS CodeCommit, or S3.
+Build Stage → Uses AWS CodeBuild to compile and test the application.
+Deploy Stage → Uses AWS CodeDeploy or other services to deploy the application.
+Example CodePipeline Workflow
+mermaid
+Copy
+Edit
+graph TD;
+    A[Source (GitHub, S3, CodeCommit)] --> B[Build (CodeBuild)];
+    B --> C[Test];
+    C --> D[Deploy (CodeDeploy, ECS, Lambda)];
+How to Create a CodePipeline?
+1️⃣ Go to AWS CodePipeline Console
+2️⃣ Click "Create Pipeline"
+3️⃣ Choose Source Provider (GitHub, S3, or CodeCommit)
+4️⃣ Add Build Stage (Use AWS CodeBuild)
+5️⃣ Add Deploy Stage (Use AWS CodeDeploy or ECS)
+6️⃣ Review & Create ✅
+
+2️⃣ AWS CodeBuild – Build & Test Automation 🔨
+What is AWS CodeBuild?
+AWS CodeBuild is a fully managed build and test service that compiles code, runs tests, and generates artifacts.
+
+How AWS CodeBuild Works?
+✔ Fetches Source Code from GitHub, S3, or CodeCommit.
+✔ Executes Build Commands defined in buildspec.yml.
+✔ Runs Tests using unit or integration testing frameworks.
+✔ Generates & Stores Artifacts for deployment.
+
+Example buildspec.yml File for CodeBuild
+yaml
+Copy
+Edit
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  build:
+    commands:
+      - echo "Building the project..."
+      - npm install
+      - npm run build
+  post_build:
+    commands:
+      - echo "Build completed successfully!"
+artifacts:
+  files:
+    - '**/*'
+How to Set Up AWS CodeBuild?
+1️⃣ Go to AWS CodeBuild Console
+2️⃣ Click "Create Build Project"
+3️⃣ Choose Source Code Repository
+4️⃣ Select Build Environment (Node.js, Python, Java, etc.)
+5️⃣ Specify buildspec.yml
+6️⃣ Run the Build & Check Logs ✅
+
+3️⃣ AWS CodeDeploy – Automated Deployment 🚀
+What is AWS CodeDeploy?
+AWS CodeDeploy automates application deployment across:
+✔ EC2 Instances
+✔ On-Premises Servers
+✔ AWS Lambda Functions
+✔ Amazon ECS Containers
+
+Deployment Types in CodeDeploy
+1️⃣ In-Place Deployment (Rolling Updates)
+
+Updates running instances one by one (or in batches).
+Used for EC2 and on-premises servers.
+2️⃣ Blue/Green Deployment
+
+Deploys to new instances, then switches traffic to them.
+Used for zero-downtime deployments.
+Example appspec.yml File for CodeDeploy
+yaml
+Copy
+Edit
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/html
+hooks:
+  ApplicationStop:
+    - location: scripts/stop_server.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: root
+How to Set Up AWS CodeDeploy?
+1️⃣ Go to AWS CodeDeploy Console
+2️⃣ Click "Create Deployment"
+3️⃣ Choose Deployment Type (EC2, Lambda, or ECS)
+4️⃣ Specify appspec.yml
+5️⃣ Deploy the Application ✅
+
+4️⃣ How AWS CodePipeline, CodeBuild & CodeDeploy Work Together
+AWS CodePipeline integrates CodeBuild (for building/testing) and CodeDeploy (for deploying).
+
+Example AWS CI/CD Workflow
+1️⃣ Developer pushes code to GitHub/AWS CodeCommit
+2️⃣ AWS CodePipeline triggers CodeBuild to compile and test the code
+3️⃣ CodePipeline then triggers CodeDeploy to deploy the build artifacts
+4️⃣ Application is deployed to EC2, ECS, or Lambda
+
+5️⃣ AWS CodePipeline Pricing 💰
+CodePipeline → $1 per pipeline per month.
+CodeBuild → Pay per build minute ($0.005/min for small instances).
+CodeDeploy → Free for EC2/Lambda, paid for on-prem servers.
+6️⃣ Conclusion
+✅ AWS CodePipeline automates CI/CD.
+✅ AWS CodeBuild compiles, tests, and prepares the application.
+✅ AWS CodeDeploy deploys applications to EC2, ECS, or Lambda.
+
+Want a hands-on lab or a real-world project example? Let me know!
